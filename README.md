@@ -24,6 +24,7 @@ This project is built for **UAS II3140 (PAWM)** and consists of:
   - [Prerequisites](#prerequisites)
   - [Backend Setup](#backend-setup)
   - [Frontend Setup](#frontend-setup)
+  - [Mobile Setup](#mobile-setup)
 - [Backend Documentation](#backend-documentation)
   - [API Endpoints](#api-endpoints)
   - [Authentication](#authentication)
@@ -36,6 +37,10 @@ This project is built for **UAS II3140 (PAWM)** and consists of:
 - [Deployment](#deployment)
 - [Contributing](#contributing)
 - [Troubleshooting](#troubleshooting)
+- [Getting Help](#getting-help)
+- [Project Statistics](#project-statistics)
+- [Changelog](#changelog)
+- [Future Roadmap](#future-roadmap)
 - [License](#license)
 - [Authors](#authors)
 
@@ -244,13 +249,13 @@ Before you begin, ensure you have the following installed:
 
 ### Frontend Setup
 
-1. **Navigate to frontend directory**
+1. Navigate to frontend directory
 
    ```bash
    cd ../frontend
    ```
 
-2. **Update API configuration**
+2. Update API configuration
 
    Edit `assets/js/api.js` to match your backend URL:
 
@@ -258,37 +263,79 @@ Before you begin, ensure you have the following installed:
    const API_BASE_URL = "http://localhost:3000/api";
    ```
 
-3. **Serve the frontend**
+3. Serve the frontend
 
-   You can use any static file server. Here are some options:
+   You can use any static file server:
 
-   **Option A: Using Python's built-in server**
-
+   Using Python:
    ```bash
    python3 -m http.server 5173
    ```
 
-   **Option B: Using Node's http-server**
-
+   Using Node http-server:
    ```bash
    npx http-server -p 5173
    ```
 
-   **Option C: Using VS Code Live Server extension**
-
+   Using VS Code Live Server:
    - Install "Live Server" extension
    - Right-click `index.html` and select "Open with Live Server"
 
-4. **Access the application**
+4. Open in browser
 
-   Open your browser and navigate to `http://localhost:5173`
+   Navigate to `http://localhost:5173` to access the application
 
-5. **Test the application**
-   - Register a new account
-   - Login with your credentials
-   - Explore materials, take exams, and complete missions
+### Mobile Setup
 
----
+1. Navigate to mobile directory
+
+   ```bash
+   cd ../mobile
+   ```
+
+2. Install dependencies
+
+   ```bash
+   npm install
+   ```
+
+3. Configure API endpoint
+
+   Update `src/config/api.ts` with backend URL:
+
+   ```typescript
+   export const API_BASE_URL = "http://your-backend-url:3000/api";
+   ```
+
+   For local development with iOS simulator, update to use your machine IP:
+   ```typescript
+   export const API_BASE_URL = "http://192.168.x.x:3000/api"; // Replace with your IP
+   ```
+
+4. Start development server
+
+   ```bash
+   npm start
+   ```
+
+   Then select platform:
+   - Press `i` for iOS simulator
+   - Press `a` for Android emulator
+   - Press `w` for web
+
+5. Run on specific platform
+
+   ```bash
+   npm run ios      # iOS simulator
+   npm run android  # Android emulator
+   npm run web      # Web preview
+   ```
+
+6. Type checking
+
+   ```bash
+   npm run typecheck
+   ```
 
 ## Frontend Documentation
 
@@ -410,58 +457,147 @@ frontend/
 
 ## Deployment
 
-The EnglishLab application is deployed on **Vercel** for both frontend and backend:
+Aplikasi EnglishLab dapat di-deploy ke berbagai platform. Berikut adalah panduan deployment untuk production.
 
-### Frontend Deployment
+### Frontend Deployment (Vercel)
 
-- **Platform**: Vercel CDN
-- **Type**: Static site hosting
-- **URL**: Deployed frontend is served through Vercel's global CDN for optimal performance
-
-### Backend Deployment
-
-- **Platform**: Vercel Serverless Functions
-- **Infrastructure**: AWS Lambda (serverless architecture behind Vercel Functions)
-- **Database**: PostgreSQL (NeonDB Serverless)
-
-### Environment Variables
-
-When deploying to production, ensure you set the following environment variables:
-
-**Backend (Vercel):**
-
-```env
-NODE_ENV=production
-DB_URL=postgresql://username:password@host:port/database
-JWT_SECRET=your-production-secret-key-must-be-secure-32-chars-minimum
-JWT_EXPIRES_IN=7d
-FRONTEND_URL=https://your-frontend-domain.vercel.app
-```
-
-**Frontend:**
-
-- Update `assets/js/api.js` to point to your production backend URL
-
-### Deployment Steps
-
-1. **Frontend Deployment to Vercel:**
+1. Prepare frontend untuk production
 
    ```bash
    cd frontend
-   vercel --prod
    ```
 
-2. **Backend Deployment to Vercel:**
+2. Push ke GitHub repository
+
+   ```bash
+   git add .
+   git commit -m "Prepare frontend for deployment"
+   git push origin main
+   ```
+
+3. Connect repository ke Vercel
+
+   - Buka https://vercel.com
+   - Klik "New Project"
+   - Import GitHub repository `virtual-web`
+   - Vercel akan automatically detect static site
+   - Click "Deploy"
+
+4. Configure environment
+
+   - Environment variables tidak diperlukan untuk frontend
+   - Update `API_BASE_URL` di `assets/js/api.js` ke production API URL
+
+5. Frontend akan live di URL: `https://your-project.vercel.app`
+
+### Backend Deployment (Vercel Serverless)
+
+1. Prepare backend untuk production
 
    ```bash
    cd backend
-   vercel --prod
+   npm run build
    ```
 
-3. **Configure Environment Variables:**
-   - Go to your Vercel project settings
-   - Add all required environment variables
-   - Redeploy if necessary
+2. Create `vercel.json` di backend directory
+
+   ```json
+   {
+     "version": 2,
+     "builds": [
+       {
+         "src": "src/index.ts",
+         "use": "@vercel/node"
+       }
+     ],
+     "routes": [
+       {
+         "src": "/(.*)",
+         "dest": "src/index.ts"
+       }
+     ]
+   }
+   ```
+
+3. Push ke GitHub
+
+   ```bash
+   git add .
+   git commit -m "Prepare backend for deployment"
+   git push origin main
+   ```
+
+4. Deploy ke Vercel
+
+   - Buka https://vercel.com
+   - Import backend repository atau push dari existing project
+   - Set environment variables di Vercel dashboard
+
+5. Environment variables untuk production
+
+   Go to Vercel Project Settings > Environment Variables, set:
+
+   ```
+   NODE_ENV=production
+   DB_URL=postgresql://user:password@host:5432/englishlab
+   JWT_SECRET=your-secure-production-secret-key-32-chars-minimum
+   JWT_EXPIRES_IN=7d
+   FRONTEND_URL=https://your-frontend.vercel.app
+   ```
+
+6. Backend akan live di URL: `https://your-backend.vercel.app`
+
+### Database Setup (NeonDB)
+
+Untuk production database:
+
+1. Buat account di https://neon.tech
+2. Create new project
+3. Copy connection string
+4. Gunakan connection string sebagai `DB_URL` di Vercel environment variables
+5. Run migrations:
+
+   ```bash
+   npm run db:push  # Apply schema
+   npm run db:seed  # Seed initial data (optional)
+   ```
+
+### Mobile App Distribution
+
+**iOS App Store:**
+
+1. Enroll di Apple Developer Program (USD 99/tahun)
+2. Create App ID dan certificates di Developer Account
+3. Build production app:
+
+   ```bash
+   eas build --platform ios --auto-submit
+   ```
+
+4. Expo akan handle submission ke App Store
+
+**Android Play Store:**
+
+1. Create Google Play Developer account (USD 25 one-time)
+2. Create app listing di Google Play Console
+3. Build production app:
+
+   ```bash
+   eas build --platform android --auto-submit
+   ```
+
+4. Expo akan handle submission ke Play Store
+
+### Post-Deployment Checklist
+
+- Test semua features di production environment
+- Verify database backups berjalan scheduled
+- Setup monitoring untuk API errors
+- Configure custom domain (optional)
+- Setup SSL/HTTPS (handled by Vercel)
+- Test login dan authentication flow
+- Verify API rate limiting working
+- Check CORS configuration untuk production domain
 
 ---
 
@@ -1175,69 +1311,111 @@ CREATE TABLE mission_progress (
 
 ## Mobile Documentation (React Native)
 
-EnglishLab juga tersedia sebagai aplikasi mobile native untuk iOS dan Android, dibangun dengan React Native & Expo.
+EnglishLab juga tersedia sebagai aplikasi mobile native untuk iOS dan Android, dibangun dengan React Native dan Expo untuk development yang cepat dan cross-platform compatibility.
 
 ### Mobile Tech Stack
 
-- **Runtime**: React Native dengan Expo
-- **Language**: TypeScript
-- **Navigation**: React Navigation (native stack, bottom tabs)
-- **Storage**: Expo Secure Store (secure local storage)
-- **UI Components**: React Native built-ins + Expo Vector Icons
-- **Styling**: React Native StyleSheet, CSS-in-JS
+- **Runtime**: React Native dengan Expo managed service
+- **Language**: TypeScript untuk type safety
+- **Navigation**: React Navigation dengan stack navigator dan bottom tab navigator
+- **Storage**: Expo Secure Store untuk secure token storage
+- **HTTP Client**: Fetch API dengan custom service layer
+- **Icons**: Expo Vector Icons untuk consistent UI
+- **Styling**: React Native StyleSheet dengan CSS-in-JS approach
 
 ### Mobile Project Structure
 
 ```
 mobile/
 ├── src/
-│   ├── App.tsx
+│   ├── App.tsx                 # Entry point
 │   ├── components/
+│   │   ├── HtmlContent.tsx
+│   │   └── LoadingSpinner.tsx
 │   ├── config/
+│   │   ├── api.ts             # API endpoint config
+│   │   └── colors.ts          # Theme colors
 │   ├── context/
+│   │   └── AuthContext.tsx    # Global auth state
 │   ├── navigation/
+│   │   └── RootNavigator.tsx  # Navigation stack setup
 │   ├── screens/
 │   │   ├── Auth/
+│   │   │   ├── LoginScreen.tsx
+│   │   │   └── RegisterScreen.tsx
 │   │   ├── Dashboard/
-│   │   └── Common/
+│   │   │   ├── Material/
+│   │   │   ├── Exam/
+│   │   │   └── Mission/
+│   │   └── Splash/
+│   │       └── SplashScreen.tsx
 │   ├── services/
+│   │   └── api.ts             # API request functions
 │   ├── storage/
-│   ├── styles/
+│   │   └── secureStorage.ts  # Secure storage wrapper
 │   └── types/
-├── ios/
-├── android/
-├── app.json
+│       ├── index.ts
+│       └── navigation.ts
+├── ios/                        # iOS native code
+├── android/                    # Android native code
+├── app.json                    # Expo app configuration
 ├── package.json
 └── tsconfig.json
 ```
 
-### Mobile Setup
+### Mobile Setup Instructions
 
-1. **Install dependencies**
+Prerequisites:
+- Node.js v16 atau lebih baru
+- Xcode untuk iOS development (Mac only)
+- Android Studio untuk Android development
+- Expo CLI: `npm install -g expo-cli`
+
+Setup steps:
+
+1. Navigate to mobile directory dan install dependencies
 
    ```bash
    cd mobile
    npm install
+   npm run typecheck
    ```
 
-2. **Configure API URL**
+2. Configure API endpoint
 
-   Update `src/config/api.ts` dengan backend URL:
+   Edit `src/config/api.ts`:
 
    ```typescript
-   export const API_BASE_URL = "http://your-backend-url:3000/api";
+   // Local development (replace with your machine IP)
+   export const API_BASE_URL = "http://192.168.x.x:3000/api";
+
+   // Production
+   export const API_BASE_URL = "https://api.englishlab.com/api";
    ```
 
-3. **Run on development client**
+3. Start development server
 
    ```bash
-   npm run start
-   npm run ios
-   npm run android
-   npm run web
+   npm start
    ```
 
-4. **Type checking**
+4. Run on iOS simulator
+
+   ```bash
+   npm run ios
+   ```
+
+   Atau tekan `i` di menu ketika sudah `npm start`
+
+5. Run on Android emulator
+
+   ```bash
+   npm run android
+   ```
+
+   Atau tekan `a` di menu
+
+6. Type checking
 
    ```bash
    npm run typecheck
@@ -1245,87 +1423,283 @@ mobile/
 
 ### Mobile Features
 
-**Native Experience:**
-- Smooth navigation dengan React Navigation
+**Authentication**
+- User registration dengan email validation
+- Secure login dengan password hashing
+- JWT token stored in Secure Store
+- Auto-logout when token expired
+- Protected routes untuk authenticated users only
+
+**Learning Materials**
+- Browse semua materials dengan list view
+- View detailed material dengan embedded YouTube video
+- Like/unlike materials untuk save favorites
+- HTML content rendering via WebView
+- Search dan filter functionality
+
+**Exams**
+- List semua available exams
+- Start exam atau resume dari attempt sebelumnya
+- Timed exam dengan countdown timer
+- Real-time question progress display
+- Immediate feedback pada submission
+- View exam history dengan scores
+
+**Missions**
+- Sequential missions (harus selesaikan urutan)
+- Image-based vocabulary questions
+- Multiple choice answer format
+- Score tracking per mission
+- Mission completion history
+- Progress indicator per question
+
+**User Interface**
 - Bottom tab navigation untuk main features
-- Native stack navigation untuk detail pages
-- Gesture support & native animations
+- Stack navigation untuk detail screens
+- Smooth transitions antar screens
+- Responsive design untuk berbagai device sizes
+- Loading indicators saat fetch data
 
-**Authentication:**
-- Login & register dengan biometric support (via Secure Store)
-- Token storage in secure device storage
-- Auto-refresh token management
-- Auto-logout on token expiration
+### Mobile Build and Deployment
 
-**Offline Support:**
-- Offline data caching
-- Sync when connection restored
-- Graceful error handling
+Development build:
 
-**Push Notifications:**
-- (Future feature) In-app notifications untuk new content
+```bash
+npm run build:dev
+```
+
+Preview build (untuk testing distribution):
+
+```bash
+npm run build:preview
+```
+
+Production build (untuk App Store/Play Store):
+
+```bash
+npm run build:prod
+```
+
+Untuk publish ke app stores, gunakan Expo EAS Build:
+
+```bash
+eas build --platform ios
+eas build --platform android
+eas submit --platform ios
+eas submit --platform android
+```
 
 ---
 
 ## Infrastructure & Docker
 
+Aplikasi dapat dijalankan secara lokal menggunakan Docker dan Docker Compose untuk consistency antara development dan production environment.
+
 ### Docker Setup
 
-Aplikasi dapat di-run menggunakan Docker Compose untuk development dan testing:
+Pastikan Docker dan Docker Compose sudah ter-install:
 
 ```bash
-cd infrastructure
-docker-compose up -d
+docker --version
+docker-compose --version
 ```
 
-**docker-compose.yml** includes:
-- PostgreSQL database
-- Backend API service
-- Frontend (static server)
-- Network configuration
+### Running with Docker Compose
 
-### Environment Configuration
+1. Navigate ke infrastructure directory
 
-Create `.env` files untuk each service:
+   ```bash
+   cd infrastructure
+   ```
 
-**Backend `.env`:**
-```env
-DATABASE_URL=postgresql://postgres:password@db:5432/englishlab
-JWT_SECRET=your-secret-key-here
-NODE_ENV=production
-```
+2. Konfigurasi environment variables
 
-**Database Initialization:**
+   Create `.env` file:
+
+   ```env
+   POSTGRES_USER=postgres
+   POSTGRES_PASSWORD=postgres
+   POSTGRES_DB=englishlab
+   DB_URL=postgresql://postgres:postgres@db:5432/englishlab
+   JWT_SECRET=your-secret-key-change-in-production
+   NODE_ENV=development
+   FRONTEND_URL=http://localhost:5173
+   ```
+
+3. Start all services
+
+   ```bash
+   docker-compose up -d
+   ```
+
+   Ini akan start:
+   - PostgreSQL database di port 5432
+   - Backend API di port 3000
+   - Frontend (optional) di port 8080
+
+4. Verify services running
+
+   ```bash
+   docker-compose ps
+   ```
+
+5. View logs
+
+   ```bash
+   docker-compose logs backend   # Backend logs
+   docker-compose logs db        # Database logs
+   ```
+
+6. Setup database
+
+   ```bash
+   docker-compose exec backend npm run db:push
+   docker-compose exec backend npm run db:seed
+   ```
+
+7. Access aplikasi
+
+   - Frontend: http://localhost:8080
+   - Backend API: http://localhost:3000
+   - Database: localhost:5432
+
+### Docker Compose Services
+
+**Database (PostgreSQL)**
+- Image: postgres:15
+- Port: 5432
+- Volume: database persistence
+- Health check: enabled
+
+**Backend (Node.js)**
+- Build: from ./backend Dockerfile
+- Port: 3000
+- Environment: development
+- Dependencies: postgresql service
+
+**Frontend (Optional)**
+- Build: from ./frontend Dockerfile
+- Port: 8080
+- Static file serving
+
+### Docker Commands Reference
+
+Stop all services:
+
 ```bash
-docker-compose exec backend npm run db:push
+docker-compose down
+```
+
+Remove all data (including database):
+
+```bash
+docker-compose down -v
+```
+
+Rebuild images:
+
+```bash
+docker-compose build --no-cache
+```
+
+Execute command di container:
+
+```bash
 docker-compose exec backend npm run db:seed
+```
+
+View real-time logs:
+
+```bash
+docker-compose logs -f backend
+```
+
+### Dockerfile Structure
+
+**Backend Dockerfile:**
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "run", "dev"]
+```
+
+**Frontend Dockerfile:**
+
+```dockerfile
+FROM node:18-alpine
+
+WORKDIR /app
+
+COPY . .
+
+EXPOSE 8080
+
+CMD ["python3", "-m", "http.server", "8080"]
 ```
 
 ---
 
 ## Contributing
 
-### Code Style
+### Code Style Guidelines
 
-- **Backend**: TypeScript dengan strict mode enabled
-- **Frontend**: ES6+ JavaScript, vanilla approach
-- **Mobile**: TypeScript, functional components dengan hooks
+#### Backend
+- TypeScript dengan strict mode enabled
+- Use Hono middleware patterns untuk reusable logic
+- Follow DTO pattern untuk request/response validation
+- Write service layer untuk business logic separation
+- Use try-catch untuk error handling dengan custom exceptions
+
+#### Frontend
+- ES6+ JavaScript dengan vanilla approach
+- Use CSS Variables untuk consistent theming
+- Responsive first design approach
+- Modular JavaScript files menggunakan ES6 Modules
+- Keep HTML semantic dan accessible
+
+#### Mobile
+- TypeScript dengan strict type checking
+- Functional components dengan React hooks
+- Use custom hooks untuk logic reuse
+- Follow React Navigation conventions
+- Prop validation dengan TypeScript interfaces
 
 ### How to Contribute
 
-1. Fork repository
-2. Create feature branch: `git checkout -b feature/amazing-feature`
-3. Commit changes: `git commit -m 'Add amazing feature'`
-4. Push to branch: `git push origin feature/amazing-feature`
-5. Open Pull Request
+1. Fork repository ke akun GitHub Anda
+2. Clone repositori lokal: `git clone https://github.com/your-username/virtual-web.git`
+3. Create feature branch: `git checkout -b feature/nama-fitur`
+4. Lakukan perubahan dan test secara menyeluruh
+5. Commit dengan pesan yang deskriptif: `git commit -m "Add: deskripsi fitur"`
+6. Push ke branch Anda: `git push origin feature/nama-fitur`
+7. Buat Pull Request ke main branch
 
-### Development Workflow
+### Git Commit Convention
 
-- Create issues untuk bugs atau features
-- Reference issue dalam PR description
-- Ensure code follows existing patterns
-- Add comments untuk complex logic
-- Test before submitting PR
+- `Add:` untuk fitur baru
+- `Fix:` untuk bug fix
+- `Update:` untuk perubahan existing code
+- `Remove:` untuk menghapus code/file
+- `Refactor:` untuk code improvement
+
+### Testing
+
+Sebelum submit PR, pastikan:
+- Backend: `npm run build` tidak ada error
+- Frontend: Semua link dan API call berfungsi
+- Mobile: `npm run typecheck` passing
 
 ---
 
@@ -1333,66 +1707,265 @@ docker-compose exec backend npm run db:seed
 
 ### Backend Issues
 
-**Port already in use (3000)**
+**Port 3000 already in use**
+
+Jika mendapat error port sudah digunakan:
+
 ```bash
 lsof -ti:3000 | xargs kill -9
+npm run dev
+```
+
+Atau gunakan port yang berbeda:
+
+```bash
 PORT=3001 npm run dev
 ```
 
 **Database connection failed**
-- Check PostgreSQL is running
-- Verify DATABASE_URL in .env
-- Ensure database exists: `createdb englishlab`
-- Check credentials are correct
 
-**JWT token errors**
-- Ensure JWT_SECRET is set & minimum 32 characters
-- Check token hasn't expired
-- Clear cookies & re-login in browser
+Pastikan PostgreSQL sudah berjalan dan database `englishlab` sudah dibuat:
+
+```bash
+# Check if PostgreSQL is running
+brew services list
+
+# Create database jika belum ada
+createdb englishlab
+
+# Verify connection
+psql -d englishlab
+```
+
+**ERROR: relation "users" does not exist**
+
+Database schema belum di-setup, jalankan migration:
+
+```bash
+npm run db:push
+npm run db:seed
+```
+
+**JWT token errors atau user tidak bisa login**
+
+Periksa konfigurasi di `.env`:
+- `JWT_SECRET` harus diset dengan string minimal 32 karakter
+- `JWT_EXPIRES_IN` format harus valid (contoh: `7d`, `24h`)
+- Hapus cookies di browser dan login ulang
 
 ### Frontend Issues
 
 **API calls returning CORS errors**
-- Backend must be running on correct port
-- Verify FRONTEND_URL in backend .env matches frontend URL
-- Clear browser cache & cookies
 
-**Images not loading**
-- Check image paths are relative to `frontend/` directory
-- Verify images exist in `frontend/assets/img/`
-- Use correct image format (PNG, JPG, SVG)
+CORS error terjadi ketika frontend dan backend domain berbeda. Solusi:
 
-**Protected pages redirecting to login**
-- Check backend is running & accessible
-- Verify API_BASE_URL in `assets/js/api.js` is correct
-- Check token in browser cookies (DevTools > Application > Cookies)
+1. Pastikan backend sudah berjalan: `npm run dev` di folder backend
+2. Cek `API_BASE_URL` di `frontend/assets/js/api.js` sesuai dengan backend URL
+3. Pastikan request menggunakan `credentials: 'include'` untuk cookies
+4. Clear browser cache dan cookies, refresh halaman
+
+**Images not loading atau rusak**
+
+Periksa:
+- Path gambar relatif dari folder `frontend/` (contoh: `assets/img/logo.png`)
+- File gambar ada di `frontend/assets/img/`
+- Format gambar valid (PNG, JPG, SVG)
+- Network tab di DevTools untuk melihat error detail
+
+**Stuck di loading atau halaman blank**
+
+Ini biasanya tanda backend tidak running:
+
+```bash
+# Terminal 1: Start backend
+cd backend
+npm run dev
+
+# Terminal 2: Serve frontend
+cd frontend
+python3 -m http.server 5173
+```
+
+Kemudian buka http://localhost:5173 di browser.
+
+**Protected pages langsung redirect ke login**
+
+Beberapa kemungkinan:
+- Backend tidak running atau tidak accessible
+- `API_BASE_URL` di config salah
+- Token expired, cek cookies di DevTools > Application > Cookies
+- Server menolak request, cek Network tab untuk response error
 
 ### Mobile Issues
 
-**Build fails on iOS**
+**Build fails dengan CocoaPods error**
+
+CocoaPods mungkin out of sync:
+
 ```bash
-npm run start:clear
-npm run ios:nobundler
+cd mobile/ios
+pod install --repo-update
+cd ..
+npm run ios
 ```
 
-**Android emulator not connecting**
+**Expo development server tidak start**
+
+Pastikan:
+- Node.js dan npm sudah ter-install dengan benar
+- `npm install` sudah selesai di folder mobile
+- Port 8081 tidak digunakan: `lsof -ti:8081`
+
+Jika masih error, coba clear cache:
+
 ```bash
-adb devices
-npm run start:clear
+npm run start -- --clear
 ```
 
-**Token not persisting**
-- Check Secure Store is installed: `expo-secure-store`
-- Verify storage key matches code
-- Clear app cache & reinstall on device
+**Android emulator tidak connect**
+
+```bash
+adb devices  # Check connected devices
+npm run start
+npm run android
+```
+
+Jika emulator tidak terdeteksi, buka Android Studio dan start emulator dari sana.
+
+**iOS simulator stuck di "Loading bundle"**
+
+Biasanya karena backend tidak running atau network issue:
+
+```bash
+# Terminal 1: Backend
+cd backend && npm run dev
+
+# Terminal 2: Expo
+cd mobile && npm start
+
+# Ketika diminta, press 'i' untuk open iOS
+```
+
+**Token tidak tersimpan atau hilang saat app restart**
+
+Secure Store harus ter-install:
+
+```bash
+npm install expo-secure-store
+npm run ios
+```
+
+Jika masih bermasalah, hapus app dari simulator dan install ulang.
+
+**API response 401 atau login gagal di mobile**
+
+Pastikan:
+- Backend sudah running dan accessible dari device/simulator
+- Token dikirim di request headers dengan benar
+- Secure Store menyimpan token dengan key yang tepat
+- Check Network tab di DevTools untuk melihat request/response detail
+
+**Build gagal dengan TypeScript errors**
+
+```bash
+npm run typecheck
+```
+
+Lihat error yang ditampilkan dan fix type definitions atau imports.
 
 ---
 
-### Mobile Setup Expo
-cd mobile
-npm install
-npx expo start
+## Getting Help
 
+### Documentation
+
+Setiap bagian project memiliki dokumentasi lengkap:
+
+- `backend/README.md` - Backend API documentation
+- `frontend/README.md` - Frontend setup guide
+- `mobile/README.md` - Mobile app guide
+- `infrastructure/README.md` - Docker dan deployment guide
+
+### Common Issues
+
+Jika mengalami masalah, cek section Troubleshooting di atas terlebih dahulu. Mayoritas issues sudah documented dengan solusi yang tested.
+
+### Reporting Issues
+
+Jika menemukan bug atau issue:
+
+1. Buat issue di GitHub repository
+2. Deskripsikan step untuk reproduce
+3. Attach screenshot atau error message
+4. Mention platform yang affected (Backend/Frontend/Mobile)
+
+### Contact
+
+Untuk pertanyaan akademik atau collaboration:
+
+- Email: ratukhansa.salsabila@student.telkomuniversity.ac.id
+- GitHub: https://github.com/ratukhansaaaa
+
+---
+
+## Project Statistics
+
+- Lines of Code (Backend): ~2,000+
+- Lines of Code (Frontend): ~3,500+
+- Lines of Code (Mobile): ~2,500+
+- Total Database Tables: 8
+- API Endpoints: 20+
+- Supported Platforms: Web, iOS, Android
+
+---
+
+## Changelog
+
+### Version 1.0.0 (Initial Release)
+
+**Features:**
+- User authentication dengan JWT
+- Learning materials dengan video content
+- Timed exams dengan scoring
+- Gamified missions
+- Responsive design untuk semua platform
+- Mobile app dengan React Native
+
+**Platforms:**
+- Web (HTML/CSS/JS)
+- iOS (React Native + Expo)
+- Android (React Native + Expo)
+- Backend API (Node.js)
+
+**Database:**
+- PostgreSQL dengan Drizzle ORM
+- Seed data included
+
+---
+
+## Future Roadmap
+
+### Planned Features
+
+- Push notifications untuk new content
+- Offline mode untuk mobile app
+- Progress analytics dashboard
+- Leaderboard/gamification enhancements
+- Content management system (CMS)
+- Teacher/admin panel
+- Video streaming optimization
+- Search optimization
+
+### Technology Improvements
+
+- Implement caching strategy (Redis)
+- Add API rate limiting
+- Improve mobile app performance
+- Add more unit tests
+- CI/CD pipeline setup
+- Monitoring dan analytics
+
+---
 
 ## License
 
