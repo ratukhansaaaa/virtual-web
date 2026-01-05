@@ -1,8 +1,19 @@
-# EnglishLab - Virtual Learning Platform
+# EnglishLab - Virtual Learning Platform (Web + Mobile)
 
 ![EnglishLab](frontend/assets/img/logo.png)
 
-**EnglishLab** is an interactive virtual learning platform designed to help students learn English through engaging materials, interactive exams, and gamified missions. Built with modern web technologies, it features a clean, responsive UI and a robust backend API.
+**EnglishLab** is an interactive virtual learning platform designed to help students learn English through learning materials, interactive exams, and gamified missions.  
+This project is built for **UAS II3140 (PAWM)** and consists of:
+- **Backend API** (Node.js + TypeScript + Hono + PostgreSQL/Drizzle)
+- **Web Frontend** (Vanilla HTML/CSS/JS)
+- **Mobile App** (React Native + Expo)
+
+## Submission Links (UAS II3140)
+- **Source Code (GitHub Repo)**: https://github.com/ratukhansaaaa/virtual-web
+- **Video Demo (YouTube)**: https://youtu.be/boHGgs4Lxd8
+- **APK (Expo EAS Artifact)**: https://expo.dev/artifacts/eas/3AkRg9dmwDDQvJRG2p7VCb.apk
+
+> Note (Safari): When opening the APK link, Safari may ask permission to **Allow downloads** for the EAS CDN domain. Click **Allow** to start downloading.
 
 ## Table of Contents
 
@@ -78,6 +89,12 @@
 - **Styling**: CSS with CSS Variables, Flexbox, Grid
 - **Assets**: Custom SVG icons, Unsplash images
 - **Hosting**: Static hosting (Netlify, Vercel, GitHub Pages)
+
+### Mobile (React Native)
+- **Framework**: React Native + Expo
+- **Language**: TypeScript
+- **Navigation**: React Navigation (stack + bottom tabs)
+- **HTTP Client**: fetch / API service layer (`mobile/src/services/api.ts`)
 
 ---
 
@@ -1370,6 +1387,12 @@ npm run start:clear
 - Clear app cache & reinstall on device
 
 ---
+
+### Mobile Setup Expo
+cd mobile
+npm install
+npx expo start
+
 
 ## License
 
