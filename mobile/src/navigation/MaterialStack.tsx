@@ -23,7 +23,6 @@ export default function MaterialStack() {
           color: "rgba(88, 28, 135, 0.96)",
         },
         headerTitleAlign: "center",
-        // soft glow-ish shadow for iOS, subtle for Android
         headerTintColor: "rgba(88, 28, 135, 0.85)",
         headerStyle: { backgroundColor: "transparent" },
         headerShadowVisible: false,

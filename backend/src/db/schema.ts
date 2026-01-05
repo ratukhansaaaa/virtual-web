@@ -9,7 +9,7 @@ import {
   unique,
 } from "drizzle-orm/pg-core";
 
-// ===== USERS TABLE =====
+
 export const users = pgTable("users", {
   id: serial("id").primaryKey(),
   email: varchar("email", { length: 255 }).notNull().unique(),
@@ -18,9 +18,9 @@ export const users = pgTable("users", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// ===== CONTENT TABLES =====
 
-// Materials table
+
+
 export const materials = pgTable("materials", {
   id: serial("id").primaryKey(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
@@ -32,7 +32,7 @@ export const materials = pgTable("materials", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Exams table
+
 export const exams = pgTable("exams", {
   id: serial("id").primaryKey(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
@@ -44,7 +44,7 @@ export const exams = pgTable("exams", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Exam questions table
+
 export const examQuestions = pgTable("exam_questions", {
   id: serial("id").primaryKey(),
   examId: integer("exam_id")
@@ -60,7 +60,7 @@ export const examQuestions = pgTable("exam_questions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// Missions table
+
 export const missions = pgTable("missions", {
   id: serial("id").primaryKey(),
   slug: varchar("slug", { length: 255 }).notNull().unique(),
@@ -70,7 +70,6 @@ export const missions = pgTable("missions", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
-// Mission questions table
 export const missionQuestions = pgTable("mission_questions", {
   id: serial("id").primaryKey(),
   missionId: integer("mission_id")
@@ -84,9 +83,7 @@ export const missionQuestions = pgTable("mission_questions", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
-// ===== USER STATE TABLES =====
 
-// Material likes table
 export const materialLikes = pgTable(
   "material_likes",
   {
@@ -107,7 +104,7 @@ export const materialLikes = pgTable(
   ]
 );
 
-// Exam submissions table
+
 export const examSubmissions = pgTable("exam_submissions", {
   id: serial("id").primaryKey(),
   userId: integer("user_id")
@@ -122,7 +119,7 @@ export const examSubmissions = pgTable("exam_submissions", {
   submittedAt: timestamp("submitted_at").defaultNow().notNull(),
 });
 
-// Mission progress table (temporary state while taking mission)
+
 export const missionProgress = pgTable(
   "mission_progress",
   {
@@ -146,7 +143,7 @@ export const missionProgress = pgTable(
   ]
 );
 
-// Mission completions table
+
 export const missionCompletions = pgTable("mission_completions", {
   id: serial("id").primaryKey(),
   userId: integer("user_id")
@@ -160,7 +157,7 @@ export const missionCompletions = pgTable("mission_completions", {
   completedAt: timestamp("completed_at").defaultNow().notNull(),
 });
 
-// ===== TYPE EXPORTS =====
+
 export type User = typeof users.$inferSelect;
 export type NewUser = typeof users.$inferInsert;
 

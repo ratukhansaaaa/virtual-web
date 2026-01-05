@@ -1,6 +1,6 @@
 import { QuestionType } from "./enums";
 
-// ---- Auth
+
 export type RegisterInput = { email: string; password: string; name: string };
 export type LoginInput = { email: string; password: string };
 
@@ -21,7 +21,7 @@ export type MeResponse = {
   user: { userId: number; email: string; name: string };
 };
 
-// ---- Materials
+
 export type MaterialListItem = {
   id: number;
   slug: string;
@@ -42,7 +42,7 @@ export type MaterialDetail = {
 
 export type MaterialLikeResponse = { liked: boolean };
 
-// ---- Missions
+
 export type MissionNextResponse =
   | {
       mission: {
@@ -96,7 +96,7 @@ export type MissionCompletionHistoryItem = {
   completedAt: string;
 };
 
-// ---- Exams
+
 export type ExamListItem = {
   id: number;
   slug: string;

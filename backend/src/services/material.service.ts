@@ -4,9 +4,7 @@ import { eq, and, asc } from 'drizzle-orm';
 import { MaterialListItem, MaterialDetail, MaterialLikeResponse } from '../dtos/material.dto';
 import { NotFoundException } from '../utils/exceptions';
 
-/**
- * Get all materials with like status for user
- */
+
 export async function getAllMaterials(userId: number): Promise<MaterialListItem[]> {
   const result = await db
     .select({
@@ -37,9 +35,7 @@ export async function getAllMaterials(userId: number): Promise<MaterialListItem[
   }));
 }
 
-/**
- * Get single material by slug with like status
- */
+
 export async function getMaterialBySlug(slug: string, userId: number): Promise<MaterialDetail> {
   const [result] = await db
     .select({
@@ -75,9 +71,7 @@ export async function getMaterialBySlug(slug: string, userId: number): Promise<M
   };
 }
 
-/**
- * Toggle like status for material
- */
+
 export async function toggleMaterialLike(slug: string, userId: number): Promise<MaterialLikeResponse> {
   // First, get the material
   const [material] = await db

@@ -13,9 +13,7 @@ import {
 import { NotFoundException, BadRequestException } from "../utils/exceptions";
 import { QuestionType } from "../types/enums";
 
-/**
- * Get all exams
- */
+
 export async function getAllExams(): Promise<ExamListItem[]> {
   const result = await db
     .select({
@@ -31,9 +29,7 @@ export async function getAllExams(): Promise<ExamListItem[]> {
   return result;
 }
 
-/**
- * Get exam with questions (without answers)
- */
+
 export async function getExamBySlug(slug: string): Promise<ExamDetailResponse> {
   // Get exam
   const [exam] = await db
@@ -79,9 +75,6 @@ export async function getExamBySlug(slug: string): Promise<ExamDetailResponse> {
   };
 }
 
-/**
- * Submit exam answers and validate
- */
 export async function submitExam(
   slug: string,
   userId: number,
@@ -171,9 +164,6 @@ export async function submitExam(
   };
 }
 
-/**
- * Get exam submission history for a specific exam
- */
 export async function getExamSubmissionHistory(
   slug: string,
   userId: number

@@ -1,4 +1,4 @@
-// Response types
+
 export interface MaterialListItem {
   id: number;
   slug: string;

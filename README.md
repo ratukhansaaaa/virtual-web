@@ -4,7 +4,7 @@
 
 **EnglishLab** is an interactive virtual learning platform designed to help students learn English through engaging materials, interactive exams, and gamified missions. Built with modern web technologies, it features a clean, responsive UI and a robust backend API.
 
-## 📚 Table of Contents
+## Table of Contents
 
 - [Features](#features)
 - [Tech Stack](#tech-stack)
@@ -20,35 +20,39 @@
 - [Frontend Documentation](#frontend-documentation)
   - [Architecture](#frontend-architecture)
   - [Key Components](#key-components)
+- [Mobile Documentation](#mobile-documentation-react-native)
+- [Infrastructure & Docker](#infrastructure--docker)
 - [Deployment](#deployment)
 - [Contributing](#contributing)
+- [Troubleshooting](#troubleshooting)
 - [License](#license)
+- [Authors](#authors)
 
 ---
 
-## ✨ Features
+## Features
 
-### 🎓 Learning Modules
+### Learning Modules
 
 - **Materials**: Browse and study English learning materials with video content
 - **Exams**: Take timed multiple-choice exams to test knowledge
 - **Missions**: Complete interactive vocabulary quizzes with visual questions
 
-### 🔐 User Management
+### User Management
 
 - Secure authentication with JWT and HTTP-only cookies
 - User registration and login
 - Persistent login sessions
 - Password hashing with bcrypt
 
-### 📊 Progress Tracking
+### Progress Tracking
 
 - Track exam scores and submission history
 - Monitor mission completion progress
 - View detailed performance analytics
 - Like/favorite learning materials
 
-### 🎨 User Experience
+### User Experience
 
 - Responsive design for mobile, tablet, and desktop
 - Modern, clean interface with gradient designs
@@ -57,7 +61,7 @@
 
 ---
 
-## 🛠 Tech Stack
+## Tech Stack
 
 ### Backend
 
@@ -77,74 +81,74 @@
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 virtual-web/
-├── backend/                 # Backend API
+├── backend/
 │   ├── src/
-│   │   ├── db/             # Database configuration and schemas
-│   │   │   ├── index.ts    # Database connection
-│   │   │   ├── schema.ts   # Drizzle ORM schemas
-│   │   │   └── seed.ts     # Database seeder
-│   │   ├── dtos/           # Data Transfer Objects & Validation
+│   │   ├── db/
+│   │   │   ├── index.ts
+│   │   │   ├── schema.ts
+│   │   │   └── seed.ts
+│   │   ├── dtos/
 │   │   │   ├── auth.dto.ts
 │   │   │   ├── exam.dto.ts
 │   │   │   └── mission.dto.ts
-│   │   ├── middlewares/    # Express/Hono middlewares
+│   │   ├── middlewares/
 │   │   │   └── auth.middleware.ts
-│   │   ├── routes/         # API route handlers
+│   │   ├── routes/
 │   │   │   ├── auth.route.ts
 │   │   │   ├── material.route.ts
 │   │   │   ├── exam.route.ts
 │   │   │   └── mission.route.ts
-│   │   ├── services/       # Business logic layer
+│   │   ├── services/
 │   │   │   ├── auth.service.ts
 │   │   │   ├── material.service.ts
 │   │   │   ├── exam.service.ts
 │   │   │   └── mission.service.ts
-│   │   ├── utils/          # Helper functions
+│   │   ├── utils/
 │   │   │   ├── config.ts
 │   │   │   ├── jwt.ts
 │   │   │   └── exceptions.ts
-│   │   └── index.ts        # Application entry point
-│   ├── drizzle/            # Drizzle migration files
+│   │   └── index.ts
+│   ├── drizzle/
 │   ├── package.json
 │   ├── tsconfig.json
 │   └── .env.example
 │
-├── frontend/               # Frontend application
+├── frontend/
 │   ├── assets/
-│   │   ├── css/           # Stylesheets
-│   │   │   ├── style.css  # Global styles
-│   │   │   ├── auth.css   # Authentication pages
+│   │   ├── css/
+│   │   │   ├── style.css
+│   │   │   ├── auth.css
 │   │   │   ├── material.css
 │   │   │   ├── exam.css
 │   │   │   ├── mission.css
 │   │   │   └── history.css
-│   │   ├── img/           # Images and icons
-│   │   └── js/            # JavaScript modules
-│   │       ├── api.js     # API configuration
-│   │       ├── auth.js    # Authentication service
+│   │   ├── img/
+│   │   └── js/
+│   │       ├── api.js
+│   │       ├── auth.js
 │   │       ├── material.js
 │   │       ├── exam.js
 │   │       ├── mission.js
 │   │       ├── protected.js
-│   │       └── *-page.js  # Page-specific controllers
+│   │       └── *-page.js
 │   ├── pages/
-│   │   ├── auth/          # Login/Register pages
-│   │   └── dashboard/     # Protected pages
+│   │   ├── auth/
+│   │   └── dashboard/
 │   │       ├── material/
 │   │       ├── exam/
 │   │       └── mission/
-│   └── index.html         # Landing page
+│   └── index.html
 │
-└── README.md              # This file
+└── README.md
 ```
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -179,34 +183,20 @@ Before you begin, ensure you have the following installed:
    Edit `.env` with your configuration:
 
    ```env
-   # Server Configuration
    PORT=3000
    NODE_ENV=development
-
-   # Database Configuration
    DB_URL=postgresql://postgres:password@localhost:5432/englishlab
-
-   # JWT Configuration (minimum 32 characters for security)
    JWT_SECRET=change-this-to-a-secure-random-32-character-or-longer-secret-key
    JWT_EXPIRES_IN=7d
-
-   # Frontend URL (for CORS)
    FRONTEND_URL=http://localhost:5173
    ```
 
 4. **Set up the database**
 
    ```bash
-   # Create database
    createdb englishlab
-
-   # Generate migrations
    npm run db:generate
-
-   # Run migrations
    npm run db:push
-
-   # Seed the database with sample data
    npm run db:seed
    ```
 
@@ -283,7 +273,125 @@ Before you begin, ensure you have the following installed:
 
 ---
 
-## 🚀 Deployment
+## Frontend Documentation
+
+### Frontend Architecture
+
+Frontend kami adalah aplikasi web statis yang dibangun dengan vanilla HTML, CSS, dan JavaScript modular (ES6 Modules). Pendekatan ini memastikan aplikasi ringan, cepat, dan mudah di-deploy tanpa build tool kompleks.
+
+**Struktur Aplikasi:**
+
+```
+frontend/
+├── index.html
+├── about.html
+├── auth/
+│   ├── login.html
+│   └── register.html
+├── dashboard/
+│   ├── material/
+│   │   ├── index.html
+│   │   └── view.html
+│   ├── exam/
+│   │   ├── index.html
+│   │   ├── view.html
+│   │   └── history.html
+│   ├── mission/
+│   │   ├── index.html
+│   │   ├── show.html
+│   │   └── history.html
+└── assets/
+    ├── css/
+    ├── img/
+    └── js/
+```
+
+**Data Flow:**
+
+1. User navigates to page → HTML loads → JavaScript initializes
+2. Protected pages check auth via `protected.js`
+3. User interactions → API calls via `api.js`
+4. Dynamic UI updates without page reload
+
+**Authentication:**
+
+- Register/login → Backend returns JWT token in HTTP-only cookie
+- Cookie sent automatically with each request
+- Protected pages check token validity via GET `/api/auth/me`
+- Unauthorized users redirected to login
+
+### Key Frontend Components & Modules
+
+**Core Services:**
+- **`assets/js/api.js`** - Centralized API client
+- **`assets/js/auth.js`** - Authentication logic
+- **`assets/js/protected.js`** - Route guard untuk protected pages
+- **`assets/js/config.js`** - Configuration & constants
+
+**Feature Modules:**
+- **`assets/js/material.js`** - Material listing & filtering
+- **`assets/js/exam.js`** - Exam interface
+- **`assets/js/mission.js`** - Mission progress management
+- **`assets/js/welcome.js`** - Landing page
+- **`assets/js/about.js`** - About page
+
+**Page Controllers:**
+- `exam-list-page.js` - Exam list
+- `exam-detail-page.js` - Exam detail
+- `exam-history-page.js` - Exam history
+- `material-list-page.js` - Material list
+- `material-detail-page.js` - Material detail
+- `mission-index-page.js` - Mission list
+- `mission-show-page.js` - Mission interface
+- `mission-history-page.js` - Mission history
+- `login.js` - Login
+- `register.js` - Registration
+
+**Styling:**
+- `style.css` - Global styles
+- `auth.css` - Auth pages
+- `exam.css` - Exam pages
+- `material.css` - Material pages
+- `mission.css` - Mission pages
+- `history.css` - History pages
+- `welcome.css` - Landing page styling
+- `about.css` - About page styling
+
+### Frontend Features
+
+**Authentication:**
+- Register dengan validation (email, password strength)
+- Login dengan email & password
+- Session persistence via secure HTTP-only cookies
+- Auto-logout on token expiration
+- Protected routes hanya accessible untuk authenticated users
+
+**Learning Materials:**
+- Browse all learning materials dengan search
+- Like/unlike materials untuk save favorites
+- Integrated YouTube video player
+- Markdown-formatted content display
+- Material categorization & filtering
+
+**Exams:**
+- Multiple-choice exam format
+- Timed exams dengan countdown timer
+- Real-time answer feedback
+- Score calculation & display
+- Submission history dengan score tracking
+- Retake exam capability
+
+**Missions:**
+- Sequential missions (complete in order)
+- Image-based vocabulary questions
+- Immediate feedback (correct/incorrect)
+- Progress tracking (X of Y questions answered)
+- Mission completion history dengan scores
+- Gamified mission experience
+
+---
+
+## Deployment
 
 The EnglishLab application is deployed on **Vercel** for both frontend and backend:
 
@@ -306,17 +414,10 @@ When deploying to production, ensure you set the following environment variables
 **Backend (Vercel):**
 
 ```env
-# Server Configuration
 NODE_ENV=production
-
-# Database Configuration
 DB_URL=postgresql://username:password@host:port/database
-
-# JWT Configuration (minimum 32 characters for security)
 JWT_SECRET=your-production-secret-key-must-be-secure-32-chars-minimum
 JWT_EXPIRES_IN=7d
-
-# Frontend URL (for CORS)
 FRONTEND_URL=https://your-frontend-domain.vercel.app
 ```
 
@@ -347,7 +448,7 @@ FRONTEND_URL=https://your-frontend-domain.vercel.app
 
 ---
 
-## 📖 Backend Documentation
+## Backend Documentation
 
 ### API Endpoints
 
@@ -361,7 +462,7 @@ http://localhost:3000/api
 
 ---
 
-### 🔐 Authentication Endpoints
+### uthentication Endpoints
 
 Authentication uses JWT tokens stored in HTTP-only cookies. Tokens expire after 7 days by default.
 
@@ -490,7 +591,7 @@ POST /api/auth/logout
 
 ---
 
-### 📚 Material Endpoints
+### Material Endpoints
 
 All material endpoints require authentication.
 
@@ -582,7 +683,7 @@ or
 
 ---
 
-### 📝 Exam Endpoints
+### Exam Endpoints
 
 All exam endpoints require authentication.
 
@@ -723,7 +824,7 @@ GET /api/exams/:slug/submissions
 
 ---
 
-### 🎯 Mission Endpoints
+### Mission Endpoints
 
 All mission endpoints require authentication. Missions are completed sequentially - users must finish one mission before proceeding to the next.
 
@@ -897,7 +998,7 @@ GET /api/missions/completions
 
 ---
 
-### 🔒 Authentication
+### Authentication
 
 The API uses JWT tokens for authentication, stored in HTTP-only cookies for security.
 
@@ -928,7 +1029,7 @@ fetch("http://localhost:3000/api/auth/me", {
 
 ---
 
-### 🗄️ Database Schema
+### Database Schema
 
 The application uses PostgreSQL with Drizzle ORM. Below is the database schema:
 
@@ -1055,7 +1156,232 @@ CREATE TABLE mission_progress (
 
 ---
 
-## 👥 Authors
+## Mobile Documentation (React Native)
+
+EnglishLab juga tersedia sebagai aplikasi mobile native untuk iOS dan Android, dibangun dengan React Native & Expo.
+
+### Mobile Tech Stack
+
+- **Runtime**: React Native dengan Expo
+- **Language**: TypeScript
+- **Navigation**: React Navigation (native stack, bottom tabs)
+- **Storage**: Expo Secure Store (secure local storage)
+- **UI Components**: React Native built-ins + Expo Vector Icons
+- **Styling**: React Native StyleSheet, CSS-in-JS
+
+### Mobile Project Structure
+
+```
+mobile/
+├── src/
+│   ├── App.tsx
+│   ├── components/
+│   ├── config/
+│   ├── context/
+│   ├── navigation/
+│   ├── screens/
+│   │   ├── Auth/
+│   │   ├── Dashboard/
+│   │   └── Common/
+│   ├── services/
+│   ├── storage/
+│   ├── styles/
+│   └── types/
+├── ios/
+├── android/
+├── app.json
+├── package.json
+└── tsconfig.json
+```
+
+### Mobile Setup
+
+1. **Install dependencies**
+
+   ```bash
+   cd mobile
+   npm install
+   ```
+
+2. **Configure API URL**
+
+   Update `src/config/api.ts` dengan backend URL:
+
+   ```typescript
+   export const API_BASE_URL = "http://your-backend-url:3000/api";
+   ```
+
+3. **Run on development client**
+
+   ```bash
+   npm run start
+   npm run ios
+   npm run android
+   npm run web
+   ```
+
+4. **Type checking**
+
+   ```bash
+   npm run typecheck
+   ```
+
+### Mobile Features
+
+**Native Experience:**
+- Smooth navigation dengan React Navigation
+- Bottom tab navigation untuk main features
+- Native stack navigation untuk detail pages
+- Gesture support & native animations
+
+**Authentication:**
+- Login & register dengan biometric support (via Secure Store)
+- Token storage in secure device storage
+- Auto-refresh token management
+- Auto-logout on token expiration
+
+**Offline Support:**
+- Offline data caching
+- Sync when connection restored
+- Graceful error handling
+
+**Push Notifications:**
+- (Future feature) In-app notifications untuk new content
+
+---
+
+## Infrastructure & Docker
+
+### Docker Setup
+
+Aplikasi dapat di-run menggunakan Docker Compose untuk development dan testing:
+
+```bash
+cd infrastructure
+docker-compose up -d
+```
+
+**docker-compose.yml** includes:
+- PostgreSQL database
+- Backend API service
+- Frontend (static server)
+- Network configuration
+
+### Environment Configuration
+
+Create `.env` files untuk each service:
+
+**Backend `.env`:**
+```env
+DATABASE_URL=postgresql://postgres:password@db:5432/englishlab
+JWT_SECRET=your-secret-key-here
+NODE_ENV=production
+```
+
+**Database Initialization:**
+```bash
+docker-compose exec backend npm run db:push
+docker-compose exec backend npm run db:seed
+```
+
+---
+
+## Contributing
+
+### Code Style
+
+- **Backend**: TypeScript dengan strict mode enabled
+- **Frontend**: ES6+ JavaScript, vanilla approach
+- **Mobile**: TypeScript, functional components dengan hooks
+
+### How to Contribute
+
+1. Fork repository
+2. Create feature branch: `git checkout -b feature/amazing-feature`
+3. Commit changes: `git commit -m 'Add amazing feature'`
+4. Push to branch: `git push origin feature/amazing-feature`
+5. Open Pull Request
+
+### Development Workflow
+
+- Create issues untuk bugs atau features
+- Reference issue dalam PR description
+- Ensure code follows existing patterns
+- Add comments untuk complex logic
+- Test before submitting PR
+
+---
+
+## Troubleshooting
+
+### Backend Issues
+
+**Port already in use (3000)**
+```bash
+lsof -ti:3000 | xargs kill -9
+PORT=3001 npm run dev
+```
+
+**Database connection failed**
+- Check PostgreSQL is running
+- Verify DATABASE_URL in .env
+- Ensure database exists: `createdb englishlab`
+- Check credentials are correct
+
+**JWT token errors**
+- Ensure JWT_SECRET is set & minimum 32 characters
+- Check token hasn't expired
+- Clear cookies & re-login in browser
+
+### Frontend Issues
+
+**API calls returning CORS errors**
+- Backend must be running on correct port
+- Verify FRONTEND_URL in backend .env matches frontend URL
+- Clear browser cache & cookies
+
+**Images not loading**
+- Check image paths are relative to `frontend/` directory
+- Verify images exist in `frontend/assets/img/`
+- Use correct image format (PNG, JPG, SVG)
+
+**Protected pages redirecting to login**
+- Check backend is running & accessible
+- Verify API_BASE_URL in `assets/js/api.js` is correct
+- Check token in browser cookies (DevTools > Application > Cookies)
+
+### Mobile Issues
+
+**Build fails on iOS**
+```bash
+npm run start:clear
+npm run ios:nobundler
+```
+
+**Android emulator not connecting**
+```bash
+adb devices
+npm run start:clear
+```
+
+**Token not persisting**
+- Check Secure Store is installed: `expo-secure-store`
+- Verify storage key matches code
+- Clear app cache & reinstall on device
+
+---
+
+## License
+
+This project is developed for academic purposes as part of the **Pemrograman Web dan Mobile (PAWM)** course at Universitas Telkom.
+
+**License Type**: Educational Use Only
+
+For commercial use or distribution, please contact the authors.
+
+---
+
+## Authors
 
 - **Ratukhansa Salsabila** - 18223034
 - **Irdina Ilmuna Yosapat** - 18223060

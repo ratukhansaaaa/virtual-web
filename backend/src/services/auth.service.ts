@@ -6,13 +6,11 @@ import { generateToken } from '../utils/jwt';
 import { RegisterInput, LoginInput, AuthResponse } from '../dtos/auth.dto';
 import { ConflictException, UnauthorizedException } from '../utils/exceptions';
 
-/**
- * Register a new user
- */
+
 export async function register(input: RegisterInput): Promise<AuthResponse & { token: string }> {
   const { email, password, name } = input;
 
-  // Check if user already exists
+
   const [existingUser] = await db
     .select()
     .from(users)
@@ -23,10 +21,10 @@ export async function register(input: RegisterInput): Promise<AuthResponse & { t
     throw new ConflictException('User already exists');
   }
 
-  // Hash password
+
   const hashedPassword = await bcrypt.hash(password, 10);
 
-  // Create user
+
   const [newUser] = await db
     .insert(users)
     .values({
@@ -41,7 +39,7 @@ export async function register(input: RegisterInput): Promise<AuthResponse & { t
       createdAt: users.createdAt,
     });
 
-  // Generate JWT token
+
   const token = await generateToken({
     userId: newUser.id,
     email: newUser.email,
@@ -55,13 +53,9 @@ export async function register(input: RegisterInput): Promise<AuthResponse & { t
   };
 }
 
-/**
- * Login user
- */
 export async function login(input: LoginInput): Promise<AuthResponse & { token: string }> {
   const { email, password } = input;
 
-  // Find user
   const [user] = await db
     .select()
     .from(users)
@@ -72,13 +66,12 @@ export async function login(input: LoginInput): Promise<AuthResponse & { token: 
     throw new UnauthorizedException('Invalid credentials');
   }
 
-  // Verify password
   const isPasswordValid = await bcrypt.compare(password, user.password);
   if (!isPasswordValid) {
     throw new UnauthorizedException('Invalid credentials');
   }
 
-  // Generate JWT token
+ 
   const token = await generateToken({
     userId: user.id,
     email: user.email,

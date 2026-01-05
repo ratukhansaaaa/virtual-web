@@ -9,10 +9,10 @@ import examRouter from "./routes/exam.route";
 import missionRouter from "./routes/mission.route";
 import { HttpException } from "./utils/exceptions";
 
-// Create Hono app
+
 const app = new Hono();
 
-// Middleware
+
 app.use("*", logger());
 app.use(
   "*",
@@ -22,7 +22,7 @@ app.use(
   })
 );
 
-// Health check endpoint
+
 app.get("/health", (c) => {
   return c.json({
     status: "ok",
@@ -32,18 +32,18 @@ app.get("/health", (c) => {
   });
 });
 
-// API routes
+
 app.route("/api/auth", authRouter);
 app.route("/api/materials", materialRouter);
 app.route("/api/exams", examRouter);
 app.route("/api/missions", missionRouter);
 
-// 404 handler
+
 app.notFound((c) => {
   return c.json({ error: "Not found" }, 404);
 });
 
-// Error handler
+
 app.onError((err, c) => {
   // Handle custom HTTP exceptions
   if (err instanceof HttpException) {
@@ -60,7 +60,7 @@ app.onError((err, c) => {
   return c.json({ error: "Internal server error" }, 500);
 });
 
-// Start server
+
 console.log(`🚀 Server starting on port ${config.port}`);
 console.log(`📚 Environment: ${config.nodeEnv}`);
 

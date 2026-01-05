@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-// Validation schemas
+
 export const missionAnswerSchema = z.object({
   questionNumber: z.number().int().positive(),
   selectedOptionIndex: z.number().int().min(0),
@@ -8,7 +8,7 @@ export const missionAnswerSchema = z.object({
 
 export type MissionAnswerInput = z.infer<typeof missionAnswerSchema>;
 
-// Response types
+
 export interface MissionQuestionResponse {
   questionNumber: number;
   questionText: string;
@@ -29,7 +29,7 @@ export interface MissionNextResponse {
     questionsAnswered: number;
     currentScore: number;
   };
-  message?: string; // "All missions completed!"
+  message?: string;
 }
 
 export interface MissionCompletionHistoryItem {

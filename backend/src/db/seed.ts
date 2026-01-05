@@ -11,7 +11,7 @@ async function seed() {
   try {
     console.log("🌱 Starting database seeding...");
 
-    // Clear existing data
+   
     console.log("🧹 Clearing existing data...");
     await db.delete(missionQuestions);
     await db.delete(missions);
@@ -357,10 +357,10 @@ async function seed() {
       .insert(materials)
       .values(materialsData)
       .returning();
-    console.log(`✅ Inserted ${insertedMaterials.length} materials`);
+    console.log(` Inserted ${insertedMaterials.length} materials`);
 
     // Seed Exams
-    console.log("📝 Seeding exams...");
+    console.log(" Seeding exams...");
     const examsData = [
       {
         slug: "grammar-tenses-quiz",
@@ -400,10 +400,10 @@ async function seed() {
     ];
 
     const insertedExams = await db.insert(exams).values(examsData).returning();
-    console.log(`✅ Inserted ${insertedExams.length} exams`);
+    console.log(` Inserted ${insertedExams.length} exams`);
 
     // Seed Exam Questions
-    console.log("❓ Seeding exam questions...");
+    console.log(" Seeding exam questions...");
 
     // Exam 1: Grammar & Tenses Quiz (text input questions)
     const exam1Questions = [
@@ -801,10 +801,10 @@ async function seed() {
       .insert(examQuestions)
       .values(allExamQuestions)
       .returning();
-    console.log(`✅ Inserted ${insertedExamQuestions.length} exam questions`);
+    console.log(` Inserted ${insertedExamQuestions.length} exam questions`);
 
     // Seed Missions
-    console.log("🎯 Seeding missions...");
+    console.log(" Seeding missions...");
     const missionsData = [
       {
         slug: "animals-vocabulary",
@@ -838,10 +838,10 @@ async function seed() {
       .insert(missions)
       .values(missionsData)
       .returning();
-    console.log(`✅ Inserted ${insertedMissions.length} missions`);
+    console.log(` Inserted ${insertedMissions.length} missions`);
 
     // Seed Mission Questions
-    console.log("🎮 Seeding mission questions...");
+    console.log(" Seeding mission questions...");
 
     // Mission 1: Animals Vocabulary
     const mission1Questions = [
@@ -1176,22 +1176,22 @@ async function seed() {
       .values(allMissionQuestions)
       .returning();
     console.log(
-      `✅ Inserted ${insertedMissionQuestions.length} mission questions`
+      ` Inserted ${insertedMissionQuestions.length} mission questions`
     );
 
     console.log("");
-    console.log("✨ Database seeding completed successfully!");
+    console.log(" Database seeding completed successfully!");
     console.log("");
     console.log("Summary:");
-    console.log(`  📚 Materials: ${insertedMaterials.length}`);
-    console.log(`  📝 Exams: ${insertedExams.length}`);
-    console.log(`  ❓ Exam Questions: ${insertedExamQuestions.length}`);
-    console.log(`  🎯 Missions: ${insertedMissions.length}`);
-    console.log(`  🎮 Mission Questions: ${insertedMissionQuestions.length}`);
+    console.log(`   Materials: ${insertedMaterials.length}`);
+    console.log(`   Exams: ${insertedExams.length}`);
+    console.log(`   Exam Questions: ${insertedExamQuestions.length}`);
+    console.log(`   Missions: ${insertedMissions.length}`);
+    console.log(`   Mission Questions: ${insertedMissionQuestions.length}`);
 
     process.exit(0);
   } catch (error) {
-    console.error("❌ Error seeding database:", error);
+    console.error(" Error seeding database:", error);
     process.exit(1);
   }
 }

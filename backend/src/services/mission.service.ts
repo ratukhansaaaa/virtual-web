@@ -14,9 +14,7 @@ import {
 } from "../dtos/mission.dto";
 import { NotFoundException, BadRequestException } from "../utils/exceptions";
 
-/**
- * Get next uncompleted mission for user (with resume support)
- */
+
 export async function getNextMission(
   userId: number
 ): Promise<MissionNextResponse> {
@@ -156,9 +154,7 @@ export async function getNextMission(
   };
 }
 
-/**
- * Submit answer for current question
- */
+
 export async function submitMissionAnswer(
   slug: string,
   userId: number,
@@ -328,9 +324,6 @@ export async function submitMissionAnswer(
   };
 }
 
-/**
- * Get mission completion history for user
- */
 export async function getMissionCompletionHistory(
   userId: number
 ): Promise<MissionCompletionHistoryItem[]> {

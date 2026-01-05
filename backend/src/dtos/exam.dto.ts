@@ -1,14 +1,14 @@
 import { z } from "zod";
 import { QuestionType } from "../types/enums";
 
-// Validation schemas
+
 export const examSubmitSchema = z.object({
-  answers: z.record(z.string(), z.string()), // { "1": "have known", "2": "1" }
+  answers: z.record(z.string(), z.string()), 
 });
 
 export type ExamSubmitInput = z.infer<typeof examSubmitSchema>;
 
-// Response types
+
 export interface ExamListItem {
   id: number;
   slug: string;
@@ -22,7 +22,7 @@ export interface ExamQuestionResponse {
   questionNumber: number;
   questionType: QuestionType;
   questionText: string;
-  options?: string[]; // Only for radio type
+  options?: string[]; 
 }
 
 export interface ExamDetailResponse {
@@ -39,8 +39,8 @@ export interface ExamDetailResponse {
 export interface ExamResultItem {
   questionNumber: number;
   isCorrect: boolean;
-  correctAnswer?: string; // For text type
-  correctOptionIndex?: number; // For radio type
+  correctAnswer?: string;
+  correctOptionIndex?: number; 
 }
 
 export interface ExamSubmitResponse {

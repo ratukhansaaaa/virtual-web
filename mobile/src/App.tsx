@@ -21,7 +21,6 @@ export default function App() {
   });
 
   if (!fontsLoaded) {
-    // keep it simple: avoid layout jumps
     return (
       <SafeAreaProvider>
         <Text />
@@ -29,8 +28,6 @@ export default function App() {
     );
   }
 
-  // Set default font across the whole app.
-  // (This keeps changes minimal; no need to edit every screen.)
   if (!(Text as any).defaultProps) (Text as any).defaultProps = {};
   (Text as any).defaultProps.style = [
     {

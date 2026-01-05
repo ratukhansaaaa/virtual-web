@@ -56,9 +56,8 @@ function TabItem({
   }, [active, activeSV]);
 
   React.useEffect(() => {
-    // ensure hover resets when leaving web tab focus
+
     if (!active) {
-      // keep as-is
     }
   }, [active]);
 
@@ -67,8 +66,7 @@ function TabItem({
     const p = pressed.value;
     const a = activeSV.value;
     const lift = interpolate(h, [0, 1], [0, -7]);
-    // Keep scaling subtle to avoid blurring PNG icons.
-    // The "selected" look should come from highlight + glow, like the reference.
+   
     const hoverScale = 1 + interpolate(h, [0, 1], [0, 0.05]);
     const activeScale = 1 + interpolate(a, [0, 1], [0, 0.10]);
     const pressScale = 1 - interpolate(p, [0, 1], [0, 0.08]);
@@ -84,12 +82,12 @@ function TabItem({
   const iconStyle = useAnimatedStyle(() => {
     const h = hover.value;
     const opacity = interpolate(h, [0, 1], [0.78, 1]);
-    // Never scale raster PNG icons (causes blur). Emphasis is handled by glow/container.
+   
     return { opacity };
   });
 
   const glowStyle = useAnimatedStyle(() => {
-    // kept for backward compatibility; no-op after simplification
+   
     return { opacity: 0 };
   });
 

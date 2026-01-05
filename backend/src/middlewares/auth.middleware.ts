@@ -8,14 +8,14 @@ export const authMiddleware = async (
   next: Next
 ): Promise<Response | void> => {
   try {
-    // Get token from Authorization header or cookie
+
     let token: string | undefined;
 
     const authHeader = c.req.header("Authorization");
     if (authHeader && authHeader.startsWith("Bearer ")) {
-      token = authHeader.substring(7); // Remove 'Bearer ' prefix
+      token = authHeader.substring(7);
     } else {
-      // Try to get token from cookie
+  
       token = getCookie(c, "token");
     }
 
@@ -23,10 +23,10 @@ export const authMiddleware = async (
       return c.json({ error: "No token provided" }, 401);
     }
 
-    // Verify token and get user data from JWT payload (stateless)
+    
     const payload = await verifyToken(token);
 
-    // Attach user data to context
+    
     const user: UserContext = {
       userId: payload.userId,
       email: payload.email,

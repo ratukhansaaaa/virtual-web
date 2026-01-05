@@ -30,7 +30,7 @@ async function request<T>(method: HttpMethod, path: string, body?: any): Promise
   const data = text ? safeJsonParse(text) : null;
 
   if (!res.ok) {
-    // backend kamu: { error: "..." } atau { error: [issues] }
+    
     const msg =
       typeof data?.error === "string"
         ? data.error
